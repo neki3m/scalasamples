@@ -13,21 +13,21 @@ object BankOfScala {
     val products = Set(coreChecking, studentCheckings, rewardsSavings, creditCard)
 
     val bobMartin = new Customer("Bob", "Martin", "bob@martin.com", LocalDate.of(1983, 8, 22))
-    val bobCheckingAccount = new Account(bobMartin, coreChecking, 1000)
-    val bobSavingsAccount = new Account(bobMartin, rewardsSavings, 20000)
-    val bobCreditAccount = new Account(bobMartin, creditCard, 4500)
+    val bobCheckingAccount = new DepositsAccount(bobMartin, coreChecking, Dollars(1000))
+    val bobSavingsAccount = new DepositsAccount(bobMartin, rewardsSavings, Dollars(20000))
+    val bobCreditAccount = new LendingAccount(bobMartin, creditCard, Dollars(4500))
     val accounts = Set(bobCheckingAccount, bobSavingsAccount, bobCreditAccount)
 
     val bank = new Bank("Bank Of Scala", "Auckland", "New Zealand",
-      "bank@scala.com", products, Set(bobMartin), accounts)
+      Email("bank", "scala.com"), products, Set(bobMartin), accounts)
 
 
     println(bobCheckingAccount)
 
-    bobCheckingAccount.deposit(100)
+    bobCheckingAccount deposit 100
     println(bobCheckingAccount)
 
-    bobCheckingAccount.withDraw(200)
+    bobCheckingAccount withdraw 200
     println(bobCheckingAccount)
   }
 }
