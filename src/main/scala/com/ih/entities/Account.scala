@@ -1,7 +1,9 @@
 package main.scala.com.ih.entities
 
+import java.util.UUID
 
 abstract class Account {
+  val id: UUID = UUID.randomUUID()
   val customer: Customer
   val product: Product
   def getBalance: Dollars
@@ -12,17 +14,17 @@ class DepositsAccount(val customer: Customer,
                       val product: Deposits,
                       private var balance: Dollars) extends Account {
 
-  def deposit(amount: Int): Unit = {
-    require(amount > 0, "amount deposited should be greater than zero.")
-    println(s"Depositing $amount to $customer account")
-    balance += amount
+  def deposit(dollars: Dollars): Unit = {
+    require(dollars.amount > 0, "amount deposited should be greater than zero.")
+    println(s"Depositing ${dollars.amount} to $customer account")
+    balance += dollars
   }
 
-  def withdraw(amount: Int): Unit = {
-    require(amount > 0 && balance > amount,
+  def withdraw(dollars: Dollars): Unit = {
+    require(dollars > Dollars(0) && balance > dollars,
       "amount should be greater than zero and requested amount should be less than or equal to balance.")
-    println(s"Withdrawing $amount to $customer account")
-    balance -= amount
+    println(s"Withdrawing ${dollars.amount} to $customer account")
+    balance -= dollars
   }
 
   override def getBalance: Dollars = balance
@@ -34,16 +36,16 @@ class LendingAccount(val customer: Customer,
                      val product: Lending,
                      private var balance: Dollars) extends Account {
 
-  def payBill(amount: Int): Unit = {
-    require(amount > 0, "The payment must be made for amount greater than zero.")
-    println(s"Paying bill of $amount against $customer account")
-    balance += amount
+  def payBill(dollars: Dollars): Unit = {
+    require(dollars > Dollars(0), "The payment must be made for amount greater than zero.")
+    println(s"Paying bill of ${dollars.amount} against $customer account")
+    balance += dollars
   }
 
-  def withdraw(amount: Int): Unit = {
-    require(amount > 0, "The withdrawal amount must be greater than zero.")
-    println(s"debiting $amount from $customer account")
-    balance -= amount
+  def withdraw(dollars: Dollars): Unit = {
+    require(dollars > Dollars(0), "The withdrawal amount must be greater than zero.")
+    println(s"debiting ${dollars.amount} from $customer account")
+    balance -= dollars
   }
 
   override def getBalance: Dollars = balance
